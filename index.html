@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Queue Time Predictor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg");
+    background-size: cover;
+    background-position: center;
+    transition: background-image 1s ease;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.75);
+}
+
+.card {
+    position: relative;
+    width: 380px;
+    height: 520px;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    padding: 16px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    text-align: center;
+    margin: 6px 0 10px;
+}
+
+input {
+    padding: 8px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    border: 1px solid #aaa;
+    font-size: 14px;
+}
+
+button {
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    background: #4a6cff;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.output {
+    margin-top: 10px;
+    flex: 1;
+    background: #f4f6ff;
+    border-radius: 10px;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 14px;
+}
+
+.person {
+    padding: 6px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.status {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay"></div>
+
+<div class="card">
+    <h2>Queue Time Predictor</h2>
+
+    <input type="number" id="peopleInput" placeholder="Enter number of people">
+    <button onclick="startQueue()">Start Queue</button>
+
+    <div class="output" id="output"></div>
+    <div class="status" id="status"></div>
+</div>
+
+<script>
+let totalPeople = 0;
+let currentPerson = 0;
+let timer;
+let bgToggle = false;
+
+// Store random times for each person
+let personTimes = [];
+
+function startQueue() {
+    totalPeople = parseInt(document.getElementById("peopleInput").value);
+    if (!totalPeople || totalPeople <= 0) {
+        alert("Enter valid number of people");
+        return;
+    }
+
+    // Generate random time for each person (2–8 minutes)
+    personTimes = [];
+    for (let i = 0; i < totalPeople; i++) {
+        personTimes.push(Math.floor(Math.random() * 7) + 2);
+    }
+
+    currentPerson = 0;
+    document.getElementById("output").innerHTML = "";
+    document.getElementById("status").innerText = "Queue started...";
+
+    clearInterval(timer);
+    timer = setInterval(processPerson, 2000); // demo speed
+}
+
+function processPerson() {
+    if (currentPerson < totalPeople) {
+        const output = document.getElementById("output");
+        currentPerson++;
+
+        // Calculate cumulative time for this person
+        const totalTime = personTimes.slice(0, currentPerson)
+                             .reduce((a,b)=>a+b,0);
+
+        output.innerHTML += `
+            <div class="person">
+                👤 Person ${currentPerson} →
+                Time: ${personTimes[currentPerson-1]} min |
+                Total wait: ${totalTime} min
+            </div>
+        `;
+    } else {
+        clearInterval(timer);
+        document.getElementById("status").innerText =
+            "Batch completed. New batch starting...";
+
+        setTimeout(resetQueue, 3000);
+    }
+}
+
+function resetQueue() {
+    bgToggle = !bgToggle;
+
+    document.body.style.backgroundImage = bgToggle
+        ? "url('https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg')"
+        : "url('https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg')";
+
+    document.getElementById("output").innerHTML = "";
+    document.getElementById("status").innerText =
+        "Enter next batch number";
+}
+</script>
+
+</body>
+</html>
