@@ -1,2 +1,41 @@
 # Hackathon-project
-Queue Time Predictor App helps users avoid long waiting times at hospitals, banks, colleges, and government offices. It predicts queue length and estimated waiting time using real-time data, reducing stress, saving time, and improving crowd management.
+I’ve created a ready-to-use HTML file for your project ✅
+
+👉 Download the Waiting Time Helper file
+
+How to use it
+
+1. Download the file
+
+
+2. Open it with any browser (Chrome, Edge, mobile browser)
+
+
+3. Enter average time per person
+
+
+4. Tap Start ⏱️
+
+
+5. You’ll get:
+
+Live countdown
+
+Notification at 1 minute left
+
+Notification when it’s your turn
+
+
+
+
+Works well on 📱 Mobile
+
+Hospitals
+
+Banks
+
+Clinics
+
+Government offices
+
+Elder-care centers
